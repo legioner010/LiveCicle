@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_livecicle" default="compile.module.livecicle">
+  <dirname property="module.livecicle.basedir" file="${ant.file.module_livecicle}"/>
+  
+  <property name="module.jdk.home.livecicle" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.livecicle" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.livecicle" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.livecicle" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="livecicle.output.dir" value="${module.livecicle.basedir}/../../build/classes/production/LiveCicle"/>
+  <property name="livecicle.testoutput.dir" value="${module.livecicle.basedir}/../../build/classes/test/LiveCicle"/>
+  
+  <path id="livecicle.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="livecicle.module.production.classpath">
+    <path refid="${module.jdk.classpath.livecicle}"/>
+  </path>
+  
+  <path id="livecicle.runtime.production.module.classpath">
+    <pathelement location="${livecicle.output.dir}"/>
+  </path>
+  
+  <path id="livecicle.module.classpath">
+    <path refid="${module.jdk.classpath.livecicle}"/>
+    <pathelement location="${livecicle.output.dir}"/>
+  </path>
+  
+  <path id="livecicle.runtime.module.classpath">
+    <pathelement location="${livecicle.testoutput.dir}"/>
+    <pathelement location="${livecicle.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.livecicle">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.livecicle">
+    <patternset refid="excluded.from.module.livecicle"/>
+  </patternset>
+  
+  
+  <target name="compile.module.livecicle" depends="compile.module.livecicle.production,compile.module.livecicle.tests" description="Compile module LiveCicle"/>
+  
+  <target name="compile.module.livecicle.production" depends="register.custom.compilers" description="Compile module LiveCicle; production classes"/>
+  
+  <target name="compile.module.livecicle.tests" depends="register.custom.compilers,compile.module.livecicle.production" description="compile module LiveCicle; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.livecicle" description="cleanup module">
+    <delete dir="${livecicle.output.dir}"/>
+    <delete dir="${livecicle.testoutput.dir}"/>
+  </target>
+</project>
